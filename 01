@@ -1,0 +1,56 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class AmazonLoginTest {
+
+    public static void main(String[] args) {
+        // Set path to chromedriver executable
+        System.setProperty("webdriver.chrome.driver", "C:\\path\\to\\chromedriver.exe");
+
+        // Initialize WebDriver
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            // Open Amazon login page
+            driver.get("https://www.amazon.com/ap/signin");
+
+            // Maximize window
+            driver.manage().window().maximize();
+
+            // Enter email/phone number
+            WebElement emailField = driver.findElement(By.id("ap_email"));
+            emailField.sendKeys("your_email@example.com");
+
+            WebElement continueButton = driver.findElement(By.id("continue"));
+            continueButton.click();
+
+            // Wait for password field to load
+            Thread.sleep(2000);
+
+            // Enter password
+            WebElement passwordField = driver.findElement(By.id("ap_password"));
+            passwordField.sendKeys("your_password");
+
+            WebElement signInButton = driver.findElement(By.id("signInSubmit"));
+            signInButton.click();
+
+            // Wait for post-login page
+            Thread.sleep(5000);
+
+            // Simple validation: check if "Your Orders" is present
+            if (driver.getPageSource().toLowerCase().contains("your orders")) {
+                System.out.println("✅ Login Successful.");
+            } else {
+                System.out.println("❌ Login Failed or additional verification required.");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            // Close the browser
+            driver.quit();
+        }
+    }
+}
