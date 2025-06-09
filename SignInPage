@@ -1,0 +1,47 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class AmazonSignInTest {
+
+    public static void main(String[] args) {
+        // Set up Chrome driver (make sure ChromeDriver is in your PATH)
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            // 1. Navigate to Amazon sign-in page
+            driver.get("https://www.amazon.com/ap/signin");
+
+            // 2. Verify the page title
+            String title = driver.getTitle();
+            if (!title.contains("Amazon Sign-In")) {
+                throw new IllegalStateException("This is not the Amazon Sign-In page.");
+            }
+
+            // 3. Enter email
+            WebElement emailInput = driver.findElement(By.id("ap_email"));
+            emailInput.sendKeys("test@example.com"); // Use test or mock email
+
+            // 4. Click Continue
+            WebElement continueButton = driver.findElement(By.id("continue"));
+            continueButton.click();
+
+            // 5. Wait briefly and check for password input
+            Thread.sleep(2000);
+            WebElement passwordInput = driver.findElement(By.id("ap_password"));
+
+            if (passwordInput.isDisplayed()) {
+                System.out.println("✅ Test passed: Password field displayed after entering email.");
+            } else {
+                System.out.println("❌ Test failed: Password field not displayed.");
+            }
+
+        } catch (Exception e) {
+            System.out.println("❌ Test failed: " + e.getMessage());
+        } finally {
+            // Close the browser
+            driver.quit();
+        }
+    }
+}
